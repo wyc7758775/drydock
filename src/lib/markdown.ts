@@ -7,11 +7,11 @@ const EMBED_RE = /!\[\[([^\]|]+?)(?:\|[^\]]*)?\]\]/g;
 const IMG_RE = /!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
 const WIKILINK_RE = /\[\[([^\][\n]+?)\]\]/g;
 const HOME_EMBED_RE = /!\[\[Home#\^([A-Za-z0-9][A-Za-z0-9-]*)\]\]/g;
-export const WIKILINK_PREFIX = "noteshare-wikilink:";
+export const WIKILINK_PREFIX = "drydock-wikilink:";
 /** Home 节点嵌入在编辑器内的伪装 src 前缀（HomeEmbed 节点认它） */
-export const HOME_EMBED_PREFIX = "noteshare-homeembed:";
+export const HOME_EMBED_PREFIX = "drydock-homeembed:";
 /** 语音块在编辑器内的伪装 src 前缀（AudioBlock/InlineAudio 节点认它），磁盘仍是 ![[路径]] */
-export const AUDIO_PREFIX = "noteshare-audio:";
+export const AUDIO_PREFIX = "drydock-audio:";
 /** 语音文件后缀：嵌入语法指向这些后缀时按音频而非图片解析 */
 const AUDIO_EXT_RE = /\.(webm|mp3|m4a|ogg|wav|aac|flac)$/i;
 /** 剥掉语音 src 上已有的伪装前缀（幂等：历史脏数据可能带一层甚至多层） */
@@ -61,7 +61,7 @@ export function forSave(markdown: string): string {
   return (
     markdown
       // 嵌入语法里残留的语音伪装前缀一律剥净（异常/HMR 脏数据自愈，避免前缀逐层加深）
-      .replace(/!\[\[noteshare-audio:([^\]]+)\]\]/g, (_m, p: string) => `![[${safeDecode(p)}]]`)
+      .replace(/!\[\[drydock-audio:([^\]]+)\]\]/g, (_m, p: string) => `![[${safeDecode(p)}]]`)
       .replace(IMG_RE, (m, alt: string, srcRaw: string) => {
         // Home 节点嵌入：伪装 src → 还原为 ![[Home#^id]]
         if (srcRaw.startsWith(HOME_EMBED_PREFIX)) {

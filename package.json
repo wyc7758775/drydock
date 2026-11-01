@@ -1,5 +1,5 @@
 {
-  "name": "note-share",
+  "name": "drydock",
   "private": true,
   "version": "0.4.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "icons": "node scripts/make-icons.mjs",
+    "icons": "tauri icon assets/brand/drydock-icon.svg",
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:theme": "node scripts/check-theme.mjs",
     "lint": "eslint src",

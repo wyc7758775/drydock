@@ -26,7 +26,7 @@ interface Column {
   needNewList: boolean;
 }
 
-const CARD_MIME = "application/x-noteshare-card";
+const CARD_MIME = "application/x-drydock-card";
 const COL_W_DEFAULT = 248;
 
 function ownFirstText(item: PMNode): string {

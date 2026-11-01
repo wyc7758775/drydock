@@ -1,7 +1,7 @@
-# NoteShare — 个人笔记软件（Obsidian 兼容 · 可单篇发布分享）
+# Drydock — 个人笔记软件（Obsidian 兼容 · 可单篇发布分享）
 
-[![Check](https://github.com/wyc7758775/note-share/actions/workflows/check.yml/badge.svg)](https://github.com/wyc7758775/note-share/actions/workflows/check.yml)
-[![Release](https://github.com/wyc7758775/note-share/actions/workflows/release.yml/badge.svg)](https://github.com/wyc7758775/note-share/actions/workflows/release.yml)
+[![Check](https://github.com/wyc7758775/drydock/actions/workflows/check.yml/badge.svg)](https://github.com/wyc7758775/drydock/actions/workflows/check.yml)
+[![Release](https://github.com/wyc7758775/drydock/actions/workflows/release.yml/badge.svg)](https://github.com/wyc7758775/drydock/actions/workflows/release.yml)
 
 一个本地优先的笔记应用：像 Obsidian 一样用**文件夹管理 Markdown 笔记**，用 **tiptap** 所见即所得地写作，随手画 **Excalidraw** 手绘板，然后**把某一篇笔记发布出去给人看**——导出单文件 HTML / A4 排版 PDF，或一键推到你自己的服务器生成分享链接。
 
@@ -106,10 +106,10 @@ src/                前端（React + tiptap + Excalidraw）
   lib/              frontmatter / markdown 双向转换 / HTML 导出
 scripts/
   dev-server.mjs    浏览器模式的 vault 文件后端
-  make-icons.mjs    生成应用图标
   check-i18n.mjs    门禁：中英文案 key 对齐 / 引用不悬空
   check-theme.mjs   门禁：亮暗主题 CSS 变量成对
   sync-version.mjs  CI：tag 版本号同步进 package/tauri/Cargo
+assets/brand/       品牌母本（drydock-icon.svg 出应用图标，mark-16.svg 是应用内简化版）
 src-tauri/          Rust 桌面端（命令与 dev-server 一一对应）
 server/             发布服务器（零依赖 Node + Docker）
 devvault/           开发用示例笔记库

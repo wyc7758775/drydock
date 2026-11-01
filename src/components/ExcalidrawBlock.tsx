@@ -11,7 +11,7 @@ import { I } from "./icons";
 export const EMPTY_SCENE_JSON = JSON.stringify({
   type: "excalidraw",
   version: 2,
-  source: "noteshare",
+  source: "drydock",
   elements: [],
   appState: { viewBackgroundColor: "#ffffff" },
   files: {},
@@ -25,13 +25,13 @@ export const EditorStateContext = createContext<{ rev: number; locked: boolean }
 
 /** 节点视图请求打开画板编辑器的事件（detail = { path, newTab }）；
  *  从笔记内进入画板默认开新标签（保留笔记标签），App 统一处理 */
-export const EDIT_SCENE_EVENT = "noteshare:edit-scene";
+export const EDIT_SCENE_EVENT = "drydock:edit-scene";
 export function emitEditScene(src: string, newTab = true) {
   window.dispatchEvent(new CustomEvent(EDIT_SCENE_EVENT, { detail: { path: src, newTab } }));
 }
 
 /** 请求用共用阅览器查看图片的事件（detail = 图片 src） */
-export const VIEW_IMAGE_EVENT = "noteshare:view-image";
+export const VIEW_IMAGE_EVENT = "drydock:view-image";
 export function emitViewImage(src: string) {
   window.dispatchEvent(new CustomEvent(VIEW_IMAGE_EVENT, { detail: src }));
 }

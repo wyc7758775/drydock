@@ -16,7 +16,7 @@ import ImageViewer, { type ViewerImage } from "./ImageViewer";
 import VaultMenu from "./VaultMenu";
 
 /** 请求聚焦侧栏搜索（欢迎页"打开文件" / Ctrl+O） */
-export const FOCUS_SEARCH_EVENT = "noteshare:focus-search";
+export const FOCUS_SEARCH_EVENT = "drydock:focus-search";
 
 const IMG_RE = /\.(png|jpe?g|gif|webp|svg)$/i;
 
@@ -40,7 +40,7 @@ const HIDDEN = new Set([".obsidian", ".trash", "Home.md"]);
 
 /** 目录树展开状态持久化（默认收起，只记展开过的文件夹路径；按仓库隔离） */
 function treeExpandedKey(vaultId: string) {
-  return `noteshare.treeExpanded.${vaultId}`;
+  return `drydock.treeExpanded.${vaultId}`;
 }
 function loadExpanded(vaultId: string): Set<string> {
   try {
@@ -362,11 +362,11 @@ export default function Sidebar(props: Props) {
           <div
             className="side-scroll"
             onDragOver={(e) => {
-              if (e.dataTransfer.types.includes("application/x-noteshare-tree")) e.preventDefault();
+              if (e.dataTransfer.types.includes("application/x-drydock-tree")) e.preventDefault();
             }}
             onDrop={(e) => {
               // 拖到树空白区 = 移回根目录
-              const raw = e.dataTransfer.getData("application/x-noteshare-tree");
+              const raw = e.dataTransfer.getData("application/x-drydock-tree");
               if (!raw) return;
               e.preventDefault();
               try {
@@ -395,7 +395,7 @@ export default function Sidebar(props: Props) {
                 {
                   label: t("newScene"),
                   onClick: () => void noteService.createScene("").then((p) => {
-                    if (p) window.dispatchEvent(new CustomEvent("noteshare:edit-scene", { detail: p }));
+                    if (p) window.dispatchEvent(new CustomEvent("drydock:edit-scene", { detail: p }));
                   }),
                 },
                 {

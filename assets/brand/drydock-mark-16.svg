@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+  <title>Drydock</title>
+  <desc>16px 简化版：只留船的剪影（船体 + 驾驶舱）。龙骨墩、吃水线、舷缘在 16 格里都会糊成噪点，故省略——完整语义由应用图标承载。</desc>
+  <!-- 船体：斜首柱 + 平龙骨 -->
+  <path d="M1.7 6.2 H14.3 L12.8 11.2 H3.4 Z" />
+  <!-- 驾驶舱 -->
+  <path d="M8.5 6.2 V3.85 H12.3 V6.2 Z" />
+</svg>

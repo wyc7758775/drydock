@@ -163,7 +163,7 @@ function TreeRow({
           title={item.name}
           onDragOver={(e) => {
             const external = e.dataTransfer.types.includes("Files"); // OS 拖入的文件
-            if (!external && !e.dataTransfer.types.includes("application/x-noteshare-tree")) return;
+            if (!external && !e.dataTransfer.types.includes("application/x-drydock-tree")) return;
             e.preventDefault(); // 允许放置
             e.dataTransfer.dropEffect = external ? "copy" : "move";
             setDropHint(true);
@@ -178,7 +178,7 @@ function TreeRow({
               void importDroppedFiles(e.dataTransfer.files, item.path, noteService);
               return;
             }
-            const raw = e.dataTransfer.getData("application/x-noteshare-tree");
+            const raw = e.dataTransfer.getData("application/x-drydock-tree");
             if (!raw) return;
             try {
               const { path, kind } = JSON.parse(raw);
@@ -269,7 +269,7 @@ function TreeRow({
         draggable
         onDragStart={(e) => {
           e.dataTransfer.setData(
-            "application/x-noteshare-tree",
+            "application/x-drydock-tree",
             JSON.stringify({ path: item.path, kind: "note" })
           );
           e.dataTransfer.effectAllowed = "move";
@@ -328,7 +328,7 @@ function TreeRow({
       draggable
       onDragStart={(e) => {
         e.dataTransfer.setData(
-          "application/x-noteshare-tree",
+          "application/x-drydock-tree",
           JSON.stringify({ path: item.path, kind: "asset" })
         );
         e.dataTransfer.effectAllowed = "move";

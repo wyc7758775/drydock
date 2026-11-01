@@ -86,7 +86,7 @@ export default function NoteToc({
   const [headings, setHeadings] = useState<TocHeading[]>([]);
   // 放得下时的用户选择（localStorage 记忆；滚动不推翻——用户说了算）
   const [userCollapsed, setUserCollapsed] = useState(
-    () => localStorage.getItem("noteshare.tocCollapsed") === "1"
+    () => localStorage.getItem("drydock.tocCollapsed") === "1"
   );
   // 正文右缘外侧的锚点（相对编辑区左边）：目录左缘默认落在这里
   const [anchor, setAnchor] = useState(0);
@@ -128,7 +128,7 @@ export default function NoteToc({
       return;
     }
     setUserCollapsed((v) => {
-      localStorage.setItem("noteshare.tocCollapsed", v ? "1" : "0");
+      localStorage.setItem("drydock.tocCollapsed", v ? "1" : "0");
       return !v;
     });
   };

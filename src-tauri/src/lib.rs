@@ -1,4 +1,4 @@
-// NoteShare 桌面端命令：与 scripts/dev-server.mjs 的 /api 一一对应。
+// Drydock 桌面端命令：与 scripts/dev-server.mjs 的 /api 一一对应。
 // 所有 path 参数都是 vault 内相对路径（正斜杠），写入前统一做越界检查。
 use base64::Engine;
 use notify::{RecommendedWatcher, RecursiveMode, Watcher};
@@ -106,18 +106,18 @@ fn write_registry(app: &AppHandle, reg: &VaultRegistryFile) -> Result<(), String
     fs::write(cfg.join("vaults.json"), bytes).map_err(|e| e.to_string())
 }
 
-/// vault 内清单 .noteshare/vault.json：身份（id/name）随文件夹走，
+/// vault 内清单 .drydock/vault.json：身份（id/name）随文件夹走，
 /// 同一文件夹在另一台机器打开仍解析到同一 id（为将来同步认亲预留）。
 fn read_manifest(vault: &Path) -> Option<Value> {
-    let txt = fs::read_to_string(vault.join(".noteshare").join("vault.json")).ok()?;
+    let txt = fs::read_to_string(vault.join(".drydock").join("vault.json")).ok()?;
     serde_json::from_str(&txt).ok()
 }
 
 fn write_manifest(vault: &Path, id: &str, name: &str) {
     // 只读文件系统等失败静默忽略：清单缺失时退化用注册表里的身份
-    let _ = fs::create_dir_all(vault.join(".noteshare"));
+    let _ = fs::create_dir_all(vault.join(".drydock"));
     if let Ok(bytes) = serde_json::to_vec(&json!({"id": id, "name": name})) {
-        let _ = fs::write(vault.join(".noteshare").join("vault.json"), bytes);
+        let _ = fs::write(vault.join(".drydock").join("vault.json"), bytes);
     }
 }
 
@@ -272,10 +272,10 @@ struct HotUpdateState {
 }
 
 /// 热更清单固定指向最新已发布 Release（草稿 Release 不可见 = 天然人工审核门）；
-/// 本地联调可用环境变量 NOTESHARE_HOTUPDATE_URL 指向自建服务
+/// 本地联调可用环境变量 DRYDOCK_HOTUPDATE_URL 指向自建服务
 fn hotupdate_manifest_url() -> String {
-    std::env::var("NOTESHARE_HOTUPDATE_URL").unwrap_or_else(|_| {
-        "https://github.com/wyc7758775/note-share/releases/latest/download/hotupdate.json".into()
+    std::env::var("DRYDOCK_HOTUPDATE_URL").unwrap_or_else(|_| {
+        "https://github.com/wyc7758775/drydock/releases/latest/download/hotupdate.json".into()
     })
 }
 
@@ -1079,7 +1079,7 @@ fn search(state: State<AppState>, q: String) -> Result<Value, String> {
 fn read_scene(state: State<AppState>, path: String) -> Result<String, String> {
     let v = vault_of(&state)?;
     // 空画板（新建）或引用的文件已被删：返回空场景，进入后重画会保存回原路径自愈
-    let empty = r#"{"type":"excalidraw","version":2,"source":"noteshare","elements":[]}"#.to_string();
+    let empty = r#"{"type":"excalidraw","version":2,"source":"drydock","elements":[]}"#.to_string();
     match resolve_inside(&v, &path) {
         Ok(abs) => fs::read_to_string(&abs).or(Ok(empty)),
         Err(_) => Ok(empty),

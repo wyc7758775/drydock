@@ -15,7 +15,7 @@ import WindowControls, { SHOW_WINDOW_CONTROLS } from "./WindowControls";
 import { Icon } from "./icons";
 
 /** 标签拖拽的 dataTransfer 类型（栏内重排、跨栏移动与拆分落区共用） */
-export const TAB_MIME = "application/x-noteshare-tab";
+export const TAB_MIME = "application/x-drydock-tab";
 
 interface Props {
   pane: Pane;
@@ -173,7 +173,7 @@ export default function PaneTabs({ pane, active, titleEdge, onNewNote }: Props) 
                 // 否则单栏双标签时拖拽永远到不了另一个标签的内容区
                 if (
                   !e.dataTransfer.types.includes(NODE_MIME) &&
-                  !e.dataTransfer.types.includes("application/x-noteshare-tree")
+                  !e.dataTransfer.types.includes("application/x-drydock-tree")
                 )
                   return;
                 e.preventDefault();

@@ -61,7 +61,7 @@ export interface Backend {
   listVaults(): Promise<VaultList>;
   /** 打开（登记并激活）一个仓库文件夹，返回最新引用；目录不存在时报错 */
   openVault(path: string): Promise<VaultInfo>;
-  /** 在 parent 下新建仓库文件夹（含 .noteshare 清单）并激活 */
+  /** 在 parent 下新建仓库文件夹（含 .drydock 清单）并激活 */
   createVault(parent: string, name: string): Promise<VaultInfo>;
   /** 仅从注册表移除，不碰磁盘 */
   removeVault(path: string): Promise<void>;

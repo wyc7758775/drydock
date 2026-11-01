@@ -17,7 +17,7 @@ import { OutlineItemView } from "./OutlineItemView";
 import { dayTitle, isDateText, monthOfText, yearOfText } from "./homeViews";
 
 /** 大纲节点拖拽的 dataTransfer 类型（Home 内重排 / 侧栏搜索行共用） */
-export const NODE_MIME = "application/x-noteshare-home-node";
+export const NODE_MIME = "application/x-drydock-home-node";
 
 // ---------------- zoom / 折叠 / 搜索 ----------------
 

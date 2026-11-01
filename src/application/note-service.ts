@@ -69,7 +69,7 @@ export class NoteService {
     const empty = JSON.stringify({
       type: "excalidraw",
       version: 2,
-      source: "noteshare",
+      source: "drydock",
       elements: [],
       appState: { viewBackgroundColor: "#ffffff" },
       files: {},

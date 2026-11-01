@@ -1,3 +1,3 @@
 @echo off
-cd /d D:\programer\note-share
+cd /d D:\programer\drydock
 npm run dev

@@ -14,23 +14,21 @@
 
 ## Tasks
 
-- [x] P1 主题溯源与 palette 定档：确认截图主题 = Solarized Dark（Warp settings.toml + 规范值校对），用 WCAG 对比度选定三级文字档位 · evidence: 读 AppData/Local/warp/Warp/config/settings.toml 得 `theme = "solarized_dark"`；用 highlight.js/solarized-dark.css 校对规范值；codemode 算 WCAG：内置暗色 ink/soft/faint = 14.09/7.02/3.69，Solarized 忠实版 4.75/3.37/2.79，提亮版 #c5cfcf/#9fb0b1/#71888b = 9.44/6.66/4.00 → 定档提亮版
-- [x] P2 基线门禁：跑 check:theme / check:i18n / lint / typecheck，记录 HEAD 真实状态（含 check:theme 是否已红） · evidence: HEAD=139355e。基线：check:theme 红（`--editor-font-size 缺少暗色覆盖`）、check:i18n 绿（388 key）、lint 0 error/79 warning、typecheck 绿。收尾复跑：check:theme 绿（预设 2 套）、i18n 绿（392 key）、lint `✖ 79 problems (0 errors, 79 warnings)` 与基线同数、typecheck exit 0、build `✓ built in 30.28s`
-- [x] P3 领域 token 表：theme-tokens.ts 增 SOLARIZED_DARK、ThemePreset { id, nameKey, descKey, base, tokens }、PRESETS、findPreset、SCHEME_EXTRA_TOKENS 白名单 · evidence: src/domain/theme-tokens.ts 新增 ThemePreset / SOLARIZED_DARK / PAPER_LIGHT / PRESETS / findPreset / SCHEME_EXTRA_TOKENS；CDP 实测 `--paper` 注为 #002b36（solarized）与 #f4efe4（paper）；门禁输出 `预设 2 套（非主题常量 4 个）`
-- [x] P4 领域偏好：themeId 允许指向预设 id；normalize 校验集合 = 预设 ids ∪ customThemes ids；resolveDark 规则不变 · evidence: findScheme(id, customThemes) 下沉到 domain/preferences.ts；normalize 注释与逻辑改为「预设 id ∪ 自定义 id」；saveTheme 拒绝预设重名、nextThemeId 避让保留字。CDP 注入非法数据后重载：themeId:'nope-does-not-exist' → null（回退内置），customThemes 里冒充 preset-paper 的项被剔除，ct-1 保留
-- [x] P5 应用服务：apply() 的 tokens 来源扩展为 builtin ∪ 方案 tokens；accent 仍最后注入 · evidence: apply() 改走配置 `this.prefs.schemeOf(cfg.themeId)` + base 匹配；CDP 实测三套方案切换：内建/深青/纸张的 --paper/--ink/--surface 均正确，--accent 始终等于用户偏好值（#b45309 亮 / #d97706 暗），方案覆盖不了
-- [x] P6 UI：ThemeManager 在内置主题行下方并列列出所有预设，点选时同时 setTheme(base) · evidence: CDP 点真实 UI：列表渲染「内置主题亮色 / Solarized 深青暗色 / 纸张亮色」；点深青 → themeId=preset-solarized 且 themePref 自动 dark、data-theme=dark；点纸张 → 自动 light；点内置 → themeId=null、--paper 回 #ffffff。截图 %TEMP%/theme-verify/{26-scheme-list,27-scheme-solarized,30-solarized-fixed,31-paper-fixed,32-builtin-fixed}.png
-- [x] P7 i18n：zh/en 同步新增预设名称与描述 key · evidence: zh/en 各增 4 个 key（themePresetSolarized{,Desc} / themePresetPaper{,Desc}）；check:i18n `✓ i18n 检查通过：zh/en 各 392 个 key 对齐，引用无悬空`（基线 388 → 392，+4）
-- [x] P8 门禁：check-theme.mjs 增预设校验（token 在白名单内、值非空、id 合法且唯一） · evidence: check-theme.mjs 新增第 5 段校验；反证测试：临时塞入 `--paper: ""` 与生造的 `--code-fg-typo` → 报 `预设 preset-solarized 的 --paper 值为空` + `覆盖了 dark 基础主题里没有的 token --code-fg-typo`（2 处），还原后复绿
-- [x] P9 文档：docs/theme-tokens.md 增预设与字体/字距两节，收敛权威表述 · evidence: docs/theme-tokens.md：页首权威表述改为「权威在 src/domain/theme-tokens.ts，styles.css 是无 JS 回退」；新增「内置预设方案（PRESETS）」与「字体与字距 token」两节（含 Solarized 忠实版三行改法 + 对比度数字）
-- [x] P10 硬编码色收口：FileTree / PublishPanel / ExcalidrawBlock 三处改走 --accent · evidence: FileTree 搜索框 → border-[var(--line-strong)] + focus:border-[var(--accent)] + ring-[var(--active-bg)]；ExcalidrawBlock → ring-[var(--accent)]；PublishPanel → text-[var(--accent)]。build 后 dist CSS 实测存在 `.text-\[var\(--accent\)\]`、`.ring-\[var\(--accent\)\]`、`.focus\:ring-\[var\(--active-bg\)\]` 等规则
-- [x] P11 验证与回归：lint / typecheck / build / check:theme / check:i18n 全绿 + 实机切换截图 · evidence: lint `✖ 79 problems (0 errors, 79 warnings)`（与基线同）；typecheck exit 0；build `✓ built in 30.28s`；check:theme 绿；check:i18n 绿。CDP 实机切换链：深青→纸张→内置，每步 --paper/--ink/--track-label 均正确且回切无残留（修掉了 `--track-label` 0.1em 残留 bug）。截图 %TEMP%/theme-verify/01..32*.png
-- [x] Q1 （可选、不阻塞）字体溯源：降级为后续可选项 · evidence: 本会话未做字体识别（已降级为可选）。已确认截图 latin 字族不是纸感的主因；纸张预设未换字族，仅放宽标签字距
-- [x] Q2 【已定】字体来源：不自带 woff2，走系统字体栈 · evidence: 未新增任何字体文件（public/ 仍无 fonts）；--font-ui/--font-serif/--font-mono 仅存回退栈，将来换字体改一行 + 加 woff2 即可
-- [x] Q3 字体与字距 token 化：--font-ui / --font-serif / --font-mono / --track-label · evidence: styles.css：8 处 font-family 收敛为 var(--font-ui/--font-serif/--font-mono)（grep 已无硬编码栈）；常量 :root 块新增 4 个 token；--editor-font-size 从色板块移入常量块。CDP 实测字距：solarized `tabLabel=normal`；paper `tabLabel=1.5px`、`settingsHint=1.1505px`、`settingsH3=1.6107px`（= 0.04em 0.4602 + 0.1em 1.1505，逐位吠合）
-- [x] Q4 纸张预设 PAPER_LIGHT（仅亮色） · evidence: PAPER_LIGHT 落表；CDP 实测 `--paper=#f4efe4`、`--surface=#faf6ee`、`--ink=#2f2b26`、`--track-label=0.1em`；实机截图显示侧栏深一档、卡片细暖边、几乎无阴影；--accent 仍为用户的 #b45309
-- [x] Q5 修复/记录现有缺陷：Noto Serif SC 未打包的回退策略 · evidence: 字体栈第一顺位保留 Noto Serif SC 并补全 Songti SC/SimSun 回退链；限制写入 docs/theme-tokens.md「已知限制：仓库不打包任何字体文件」一节
-- [x] Q6 验证：字体/字距 token 确实跟随方案变化；两套方案互切无残留 · evidence: CDP 实机点选三套方案后截图对比（%TEMP%/theme-verify/）：30-solarized-fixed（深青设置面板）、31-paper-fixed（纸张）、32-builtin-fixed（回内置）；实测发现并修复 --track-label 切回内置后残留 0.1em 的 bug（apply() 对 SCHEME_EXTRA_TOKENS 做 removeProperty）
+- [x] R1 前端源码内部标识全量改名：localStorage key / 事件名 / MIME / 卡片链接协议 / excalidraw source · evidence: sed 全量替换 38 个文件（NoteShare/noteShare/NOTESHARE/noteshare/note-share 五种写法）；grep -rn -i -E "noteshare|note-share" src src-tauri/src ... → 0 行；npm run typecheck -> exit 0
+- [x] R2 Tauri 配置改名：productName / window title / identifier / updater endpoints · evidence: tauri.conf.json：productName=Drydock、identifier=com.yoran.drydock、window title=Drydock、updater endpoints → github.com/wyc7758775/drydock；实机已生成 %APPDATA%\com.yoran.drydock
+- [x] R3 磁盘清单目录 .noteshare → .drydock（Rust + dev-server 同步） · evidence: lib.rs vault.join(".drydock")；dev-server.mjs path.join(abs, ".drydock", "vault.json")；cargo check exit=0；实机 D:/ProgramData/NoteShare/.drydock/vault.json 已生成
+- [x] R4 包名改名：npm / Cargo / [lib] name / main.rs，产物 drydock.exe · evidence: package.json name=drydock；Cargo.toml name=drydock + [lib] name=drydock_lib；main.rs；tauri build 产物 = target/release/drydock.exe（13.7MB）
+- [x] R5 可见文案改名：index.html / VaultSwitcher / README / AGENTS.md · evidence: index.html <title>Drydock；VaultSwitcher wordmark=Drydock；README 标题与两个 badge；AGENTS.md # Drydock 架构纪律
+- [x] R6 发布与脚本链路改名：release.yml / 启动.bat / start-*.cmd / server · evidence: release.yml releaseName 与 web.zip url；启动.bat 3 处；start-dev.cmd + start-vite.cmd；server/publish-server.mjs 头注释；docker-compose 容器名 drydock-publish
+- [x] R7 残留扫描门禁：代码与配置里搜不到 noteshare / note_share / note-share · evidence: grep -rn -i -E "noteshare|note_share|note-share" 11 个代码/配置路径 + assets -> 0 行（wc -l = 0），exit 0
+- [x] R8 改名后回归：lint / typecheck / check:i18n / check:theme / build / cargo 全绿 · evidence: check:i18n ✓ 392 key；check:theme ✓ 36/35/2 套；typecheck exit 0；lint ✖ 79 problems (0 errors，与基线同数)；vite build ✓ 17.60s；cargo check exit 0；tauri build --no-bundle ✓ release 1m28s
+- [ ] R9 手动两步（我做不了，需你操作）：GitHub repo 改名 + 本地目录重命名 · evidence: 未执行（需用户操作）：GitHub 仓库改名、重命名本地目录 D:\programer\note-share（pi 正跑在这个目录里，不能自己重命名）。代码侧 URL 已全部指向新仓
+- [x] K1 品牌母本 SVG（干船坞方案）与 16px 简化版 · evidence: assets/brand/drydock-icon.svg（1024 画板）；assets/brand/drydock-mark-16.svg（16 网格填充剪影）
+- [x] K2 图标生成改走 tauri icon（npm run icons），移除旧的 make-icons.mjs · evidence: package.json "icons": "tauri icon assets/brand/drydock-icon.svg"；rm scripts/make-icons.mjs；tauri icon 输出 icns/ico/32/128/128@2x/Square*/android/ios 全套
+- [x] K3 多尺寸目检与修形（16/32/128/512） · evidence: 对 render 迭代 12 轮，每轮读 icon.png / 32x32.png 目检：依次修掉“碗”、“相框”、“礼帽”、“拖鞋”、“长腿托盘”，最终 32/512 两档可读为“船架在三块墩上”；水位线从背景入船体（Plimsoll 记号），墩子改等高
+- [x] K4 应用内 logo：icons.tsx 新增 DrydockMark，VaultSwitcher wordmark 换用它 · evidence: icons.tsx 新增 DrydockMark（两个填充路径，currentColor）；VaultSwitcher 改用 <DrydockMark size={26}/> + Drydock 文字；PikachuLogo 保留在 EmptyState/App.tsx；typecheck exit 0，lint 79 warnings 0 errors
+- [x] K5 品牌文档 docs/branding.md · evidence: docs/branding.md：名字由来、图标元素几何/色值表、三条比例规则、色值归属、16px 简化规则（含为何去掉墩子）、生成与目检清单、改名范围与回滚
+- [x] K6 实机目检：exe 内嵌图标与 16px wordmark 渲染 · evidence: npm run tauri build -- --no-bundle -> 产出 src-tauri/target/release/drydock.exe；PowerShell [Icon]::ExtractAssociatedIcon 抽取 exe 内嵌图标 → 32x32 PNG 已目检为新船坞标志（即任务栏/开始菜单/安装包所用图标）；16px wordmark 另以 g=currentColor 预览图目检
 
 ## 验收
 

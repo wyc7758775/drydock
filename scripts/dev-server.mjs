@@ -133,7 +133,7 @@ function* walkNotes(dir, rel) {
 }
 
 // web 模式多仓库：注册表持久化到 ROOT/.dev-vaults.json，当前仓库可切换
-// （与桌面端语义对齐：清单 .noteshare/vault.json 随文件夹走，注册表只记身份与最近打开）
+// （与桌面端语义对齐：清单 .drydock/vault.json 随文件夹走，注册表只记身份与最近打开）
 let VAULT = DEFAULT_VAULT;
 
 const readRegistry = () => {
@@ -160,7 +160,7 @@ function upsertAndActivate(p, fallbackName) {
   if (!fs.existsSync(abs) || !fs.statSync(abs).isDirectory()) throw new Error("文件夹不存在");
   let manifest = null;
   try {
-    manifest = JSON.parse(fs.readFileSync(path.join(abs, ".noteshare", "vault.json"), "utf8"));
+    manifest = JSON.parse(fs.readFileSync(path.join(abs, ".drydock", "vault.json"), "utf8"));
   } catch {
     /* 无清单：下面补写 */
   }
@@ -168,8 +168,8 @@ function upsertAndActivate(p, fallbackName) {
   const old = reg.vaults.find((v) => path.resolve(v.path) === abs);
   const id = manifest?.id ?? old?.id ?? `wv-${crypto.randomBytes(6).toString("hex")}`;
   const name = manifest?.name ?? fallbackName ?? old?.name ?? path.basename(abs);
-  fs.mkdirSync(path.join(abs, ".noteshare"), { recursive: true });
-  fs.writeFileSync(path.join(abs, ".noteshare", "vault.json"), JSON.stringify({ id, name }), "utf8");
+  fs.mkdirSync(path.join(abs, ".drydock"), { recursive: true });
+  fs.writeFileSync(path.join(abs, ".drydock", "vault.json"), JSON.stringify({ id, name }), "utf8");
   const now = Math.floor(Date.now() / 1000);
   reg.vaults = reg.vaults.filter((v) => path.resolve(v.path) !== abs);
   reg.vaults.push({ id, name, path: toPosix(abs), lastOpenedAt: now });
@@ -328,7 +328,7 @@ const handlers = {
       return fs.readFileSync(resolveInside(rel), "utf8");
     } catch {
       // 空画板（新建）或引用的文件已被删：返回空场景，进入后重画会保存回原路径自愈
-      return JSON.stringify({ type: "excalidraw", version: 2, source: "noteshare", elements: [] });
+      return JSON.stringify({ type: "excalidraw", version: 2, source: "drydock", elements: [] });
     }
   },
   "scene-save": async ({ name, sceneJson, pngBase64, folder }) => {

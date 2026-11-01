@@ -1,18 +1,18 @@
 // 启动页 / 仓库管理器：复刻 Obsidian 原版布局——顶部「新建仓库 / 打开本地仓库」
 // 两张动作卡（新建卡点击原地展开为表单），下方已知仓库列表；整页铺满窗口，
 // 桌面端此页即小窗（见 backend/window-size.ts），web 预览居中限宽。
-// 新建 = 选父目录 + 起名（写入 .noteshare 清单）；打开本地 = 选已有文件夹，
+// 新建 = 选父目录 + 起名（写入 .drydock 清单）；打开本地 = 选已有文件夹，
 // 兼容直接打开现成的 Obsidian 库。web 模式无系统选目录弹窗：右卡退化为手输路径。
 
 import { useEffect, useState } from "react";
 import { useSettings } from "../i18n";
 import { useVaultsVersion } from "../domain/vault";
 import type { VaultService } from "../application/vault-service";
-import { PikachuLogo, I } from "./icons";
+import { DrydockMark, I } from "./icons";
 import { setPickerWindowSize } from "../backend/window-size";
 import FolderBrowseDialog from "./FolderBrowseDialog";
 
-const LAST_PARENT_KEY = "noteshare.lastVaultParent";
+const LAST_PARENT_KEY = "drydock.lastVaultParent";
 
 interface Props {
   service: VaultService;
@@ -100,8 +100,8 @@ export default function VaultSwitcher({ service, onOpen, onBack }: Props) {
     <div className="vault-switcher">
       <header className="vs-head">
         <div className="flex items-center gap-2.5">
-          <PikachuLogo size={26} className="text-ink" />
-          <span className="serif text-[1.133rem] font-semibold text-ink">NoteShare</span>
+          <DrydockMark size={26} className="text-ink" />
+          <span className="serif text-[1.133rem] font-semibold text-ink">Drydock</span>
         </div>
         {onBack && (
           <button className="vs-back" onClick={onBack}>

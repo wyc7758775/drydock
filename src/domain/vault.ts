@@ -7,7 +7,7 @@
 import { useSyncExternalStore } from "react";
 
 export interface VaultRef {
-  id: string; // 稳定身份（vault 内 .noteshare/vault.json 清单持有，为同步预留）
+  id: string; // 稳定身份（vault 内 .drydock/vault.json 清单持有，为同步预留）
   name: string;
   path: string; // 绝对路径；web 模式为 VAULT_DIR
   lastOpenedAt: number; // unix 秒，列表排序与"上次打开"判定

@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "NoteShare",
+  "productName": "Drydock",
   "version": "0.4.0",
-  "identifier": "com.yoran.noteshare",
+  "identifier": "com.yoran.drydock",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:5188",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "NoteShare 笔记",
+        "title": "Drydock",
         "width": 1280,
         "height": 820,
         "minWidth": 560,
@@ -39,7 +39,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEY4RjVCREFBMEMzNTExMjIKUldRaUVUVU1xcjMxK0VQNkZBcUpHZE9tYWxCNnE0dlJqa3VqUm5tZjhmQlpJWUlUUVBnZnB6UFYK",
       "endpoints": [
-        "https://github.com/wyc7758775/note-share/releases/latest/download/latest.json"
+        "https://github.com/wyc7758775/drydock/releases/latest/download/latest.json"
       ]
     }
   }

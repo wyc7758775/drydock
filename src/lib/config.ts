@@ -4,7 +4,7 @@ export interface PublishConfig {
   token: string;
 }
 
-const KEY = "noteshare.publish";
+const KEY = "drydock.publish";
 
 export function getPublishConfig(): PublishConfig {
   try {

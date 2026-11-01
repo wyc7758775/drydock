@@ -55,7 +55,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: "NoteShare ${{ github.ref_name }}"
+          releaseName: "Drydock ${{ github.ref_name }}"
           releaseBody: |
             打包产物：
             - macOS：.dmg（Apple Silicon / Intel 各一；未做开发者签名，首次打开请右键 → 打开）
@@ -86,7 +86,7 @@ jobs:
           $zip.Dispose()
           $manifest = @{
             version = $env:TAG
-            url = "https://github.com/wyc7758775/note-share/releases/latest/download/web.zip"
+            url = "https://github.com/wyc7758775/drydock/releases/latest/download/web.zip"
           } | ConvertTo-Json -Compress
           Set-Content -Path hotupdate.json -Value $manifest -Encoding utf8NoBOM
           gh release upload "$env:TAG" web.zip hotupdate.json --clobber

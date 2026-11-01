@@ -9,8 +9,8 @@ import { useSettings } from "../i18n";
 import { useDomain } from "../domain/provider";
 import { emitOpenNote } from "./WikiLink";
 
-/** 卡片链接协议：noteshare://<vault 相对路径> */
-const NOTE_LINK = "noteshare://";
+/** 卡片链接协议：drydock://<vault 相对路径> */
+const NOTE_LINK = "drydock://";
 
 interface Props {
   src: string;
@@ -65,7 +65,7 @@ export default function ExcalidrawPanel({ src, active, onSaved, onClose }: Props
     return JSON.stringify({
       type: "excalidraw",
       version: 2,
-      source: "noteshare",
+      source: "drydock",
       elements: l.elements,
       files: l.files,
       appState: { viewBackgroundColor: l.appState?.viewBackgroundColor },
@@ -171,7 +171,7 @@ export default function ExcalidrawPanel({ src, active, onSaved, onClose }: Props
           initialData={initialData}
           onChange={handleChange}
           theme={dark ? "dark" : "light"}
-          // 点击笔记卡片（noteshare:// 链接）跳转：普通点击当前栏新标签（保留画板），Ctrl+点击新栏
+          // 点击笔记卡片（drydock:// 链接）跳转：普通点击当前栏新标签（保留画板），Ctrl+点击新栏
           onLinkOpen={(element: any, event: any) => {
             const link = String(element?.link ?? "");
             if (link.startsWith(NOTE_LINK)) {

@@ -101,7 +101,7 @@ const CvCtx = createContext<{
 
 const IMG_RE = /\.(png|jpe?g|gif|webp|svg)$/i;
 /** 文件树拖拽的 dataTransfer 类型（与 FileTree 约定） */
-const TREE_MIME = "application/x-noteshare-tree";
+const TREE_MIME = "application/x-drydock-tree";
 const ARROW = { type: MarkerType.ArrowClosed, width: 18, height: 18 };
 const SIZES = {
   note: { w: 400, h: 340 },

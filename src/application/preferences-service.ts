@@ -1,5 +1,5 @@
 // PreferencesService（应用服务）：偏好的唯一 IO 与 DOM 投影入口。
-// - 持久化：localStorage（key `noteshare.prefs`，自动迁移旧 noteshare.lang/theme/accent）
+// - 持久化：localStorage（key `drydock.prefs`，自动迁移旧 drydock.lang/theme/accent）
 // - 投影：<html> 的 data-theme / lang / font-size（rem 基准）/ --editor-font-size / --accent*
 //   以及内置主题 ∪ 主题方案的 token（字体/字距也走同一通道）
 //   这些 DOM 状态全部可由 config 全量重建（启动 bootstrap 时重建一次）。
@@ -15,7 +15,7 @@ import {
 } from "../domain/preferences";
 import { builtin, SCHEME_EXTRA_TOKENS, type ThemeTokens } from "../domain/theme-tokens";
 
-const KEY = "noteshare.prefs";
+const KEY = "drydock.prefs";
 
 /** 读旧版分散存储并合并进新 key（迁移一次后旧 key 仍保留原值，不再读） */
 function readStorage(): unknown {
@@ -26,11 +26,11 @@ function readStorage(): unknown {
     /* 损坏回退旧 key */
   }
   const legacy: Record<string, unknown> = {};
-  if (localStorage.getItem("noteshare.lang") === "en") legacy.lang = "en";
-  const t = localStorage.getItem("noteshare.theme");
+  if (localStorage.getItem("drydock.lang") === "en") legacy.lang = "en";
+  const t = localStorage.getItem("drydock.theme");
   if (t === "light" || t === "dark" || t === "system") legacy.theme = t;
   try {
-    const a = JSON.parse(localStorage.getItem("noteshare.accent") ?? "null");
+    const a = JSON.parse(localStorage.getItem("drydock.accent") ?? "null");
     if (a && typeof a.light === "string" && typeof a.dark === "string") legacy.accent = a;
   } catch {
     /* 忽略 */

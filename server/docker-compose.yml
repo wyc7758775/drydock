@@ -1,7 +1,7 @@
 services:
-  noteshare-publish:
+  drydock-publish:
     build: .
-    container_name: noteshare-publish
+    container_name: drydock-publish
     restart: unless-stopped
     ports:
       - "8788:8788"

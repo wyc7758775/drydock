@@ -374,3 +374,28 @@ export function PikachuLogo({ size = 110, className = "" }: { size?: number; cla
     </svg>
   );
 }
+
+/**
+ * 品牌标志：干船坞里的船（剪影版）。
+ * 16px 简化版（母本 assets/brand/drydock-mark-16.svg）：只留船体 + 驾驶舱，
+ * 龙骨墩、吃水线、舷缘在这一档都会糊成噪点，完整语义由应用图标承载。
+ * 用 currentColor 填充（Logo 而非 UI 图标，不跟 docs/icon-theme.md 的描边规范）。
+ */
+export function DrydockMark({ size = 16, className = "" }: { size?: number; className?: string }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="currentColor"
+      className={className}
+      aria-label="Drydock"
+      role="img"
+    >
+      {/* 船体：斜首柱 + 平龙骨 */}
+      <path d="M1.7 6.2 H14.3 L12.8 11.2 H3.4 Z" />
+      {/* 驾驶舱 */}
+      <path d="M8.5 6.2 V3.85 H12.3 V6.2 Z" />
+    </svg>
+  );
+}

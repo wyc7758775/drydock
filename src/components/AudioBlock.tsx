@@ -2,7 +2,7 @@
 // 双形态注册共用一个 NodeView：笔记 = 块级 AudioBlock（独占一行），
 // 大纲 = 行内 InlineAudio（放在独立 item 里，圆点后整行即播放器）。
 // 磁盘格式 ![[attachments/voice-*.webm]]，进出编辑器经 markdown.ts 伪装互转
-// （与 HomeEmbed 的 noteshare-homeembed: 前缀同款方案，priority 高于 CustomImage）。
+// （与 HomeEmbed 的 drydock-homeembed: 前缀同款方案，priority 高于 CustomImage）。
 import { useEffect, useRef, useState } from "react";
 import { Node, mergeAttributes } from "@tiptap/core";
 import type { Editor, Range } from "@tiptap/core";

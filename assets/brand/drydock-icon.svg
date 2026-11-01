@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>Drydock</title>
+  <desc>干船坞：坞底的水抽干了，船被三块龙骨墩架起来检修，船体上留着吃水线标记。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#1c3a43"/><stop offset="1" stop-color="#0b1b21"/>
+    </linearGradient>
+    <linearGradient id="hull" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#e69138"/><stop offset="1" stop-color="#a94a07"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1024" height="1024" rx="228" fill="url(#bg)"/>
+
+  <rect x="310" y="700" width="140" height="120" rx="18" fill="#5d7f89" opacity="0.85"/>
+  <rect x="482" y="700" width="140" height="120" rx="18" fill="#5d7f89" opacity="0.85"/>
+  <rect x="654" y="700" width="140" height="120" rx="18" fill="#5d7f89" opacity="0.85"/>
+
+  <!-- 船体 -->
+  <path d="M150 400 L 920 400 L 920 560 C 920 650 870 700 800 700 L 280 700 Z"
+        fill="url(#hull)"/>
+
+  <!-- 舷缘（甲板边线） -->
+  <path d="M180 434 L 906 434" stroke="#f2a94a" stroke-width="14" stroke-linecap="round" opacity="0.55"/>
+
+  <!-- 驾驶舱 -->
+  <rect x="618" y="248" width="242" height="152" rx="16" fill="#f2a94a"/>
+
+  <!-- 坞底 -->
+  <path d="M212 820 H 902" stroke="#6f909a" stroke-width="18" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- 吃水线标记 -->
+  <circle cx="470" cy="592" r="52" fill="none" stroke="#f2a94a" stroke-width="14" opacity="0.92"/>
+  <path d="M392 592 H 548" stroke="#f2a94a" stroke-width="14" stroke-linecap="round" opacity="0.92"/>
+</svg>

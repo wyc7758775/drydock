@@ -68,7 +68,7 @@ const label = (id, x, text, container) => ({
 const scene = {
   type: "excalidraw",
   version: 2,
-  source: "noteshare",
+  source: "drydock",
   elements: [
     rect("rect-input", 80, "#a5d8ff", ["label-input", "arrow-1"]),
     label("label-input", 110, "写笔记", "rect-input"),

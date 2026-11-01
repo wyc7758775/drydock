@@ -12,11 +12,11 @@ import { safeDecode } from "../lib/markdown";
 import { useDomain, useDirectoryVersion } from "../domain/provider";
 
 /** forEditor 把 [[x]] 伪装成 markdown 链接时用的 href 前缀 */
-export const WIKILINK_PREFIX = "noteshare-wikilink:";
+export const WIKILINK_PREFIX = "drydock-wikilink:";
 
 /** 跳转到某篇笔记的事件；newTab = Ctrl/⌘+点击（当前栏新标签）、
  *  newPane = Ctrl+Shift+点击（新栏）；导航类交互，保留 window 事件 */
-export const OPEN_NOTE_EVENT = "noteshare:open-note";
+export const OPEN_NOTE_EVENT = "drydock:open-note";
 export function emitOpenNote(path: string, opts?: { newTab?: boolean; newPane?: boolean }) {
   window.dispatchEvent(new CustomEvent(OPEN_NOTE_EVENT, { detail: { path, ...opts } }));
 }

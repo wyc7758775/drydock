@@ -2,13 +2,13 @@
 // HomeView 是懒加载 tab 内容，跳转发生时可能尚未挂载：
 // pendingZoom 先记下目标，挂载完成（setContent 之后）再消费。
 
-export const OPEN_HOME_EVENT = "noteshare:open-home";
-export const ZOOM_HOME_EVENT = "noteshare:zoom-home";
+export const OPEN_HOME_EVENT = "drydock:open-home";
+export const ZOOM_HOME_EVENT = "drydock:zoom-home";
 /** 全局返回/前进（鼠标侧键）：由当前激活视图先处理（Home 的 zoom），未处理再落 App 历史 */
-export const NAV_BACK_EVENT = "noteshare:nav-back";
-export const NAV_FORWARD_EVENT = "noteshare:nav-forward";
+export const NAV_BACK_EVENT = "drydock:nav-back";
+export const NAV_FORWARD_EVENT = "drydock:nav-forward";
 /** 点击 Home/Workflowy 入口：清空搜索并回到原始大纲 */
-export const RESET_HOME_EVENT = "noteshare:reset-home";
+export const RESET_HOME_EVENT = "drydock:reset-home";
 
 export interface HomeOpenOpts {
   newTab?: boolean;

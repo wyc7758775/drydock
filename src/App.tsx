@@ -135,17 +135,17 @@ function VaultApp({
 
   // 侧栏宽度与收起（记忆到本地）
   const [sideWidth, setSideWidth] = useState(() => {
-    const v = Number(localStorage.getItem("noteshare.sideWidth"));
+    const v = Number(localStorage.getItem("drydock.sideWidth"));
     return Number.isFinite(v) && v >= 190 && v <= 480 ? v : 256;
   });
   const [sideCollapsed, setSideCollapsed] = useState(
-    () => localStorage.getItem("noteshare.sideCollapsed") === "1"
+    () => localStorage.getItem("drydock.sideCollapsed") === "1"
   );
   useEffect(() => {
-    localStorage.setItem("noteshare.sideWidth", String(sideWidth));
+    localStorage.setItem("drydock.sideWidth", String(sideWidth));
   }, [sideWidth]);
   useEffect(() => {
-    localStorage.setItem("noteshare.sideCollapsed", sideCollapsed ? "1" : "0");
+    localStorage.setItem("drydock.sideCollapsed", sideCollapsed ? "1" : "0");
   }, [sideCollapsed]);
 
   // 应用导航历史（时间线）：每一次路由变化（树/搜索/双链/切标签/换栏）都记一步。
@@ -350,7 +350,7 @@ function VaultApp({
   // 领域装配：名录初始化；文件树/分栏跟随领域事件自动更新。
   // 固定入口：大纲索引装载 + 空工作台启动落地——优先恢复上次关闭前打开的最后一篇笔记
   // （按仓库记忆；文件已删/改名则回退到 Workflowy 大纲）。
-  const lastNoteKey = `noteshare.lastNote.${vault.id}`;
+  const lastNoteKey = `drydock.lastNote.${vault.id}`;
   useEffect(() => {
     void directory.init();
     void outline.init().then(async () => {
@@ -451,7 +451,7 @@ function VaultApp({
   // DOM mousedown 不一定收得到（实测 Chrome 会直接离开文档）。在当前位置上方
   // 常备一层同文档 guard，后退先落到 guard，再走 App 自己的历史；每次后退后补回。
   useEffect(() => {
-    const key = "__noteShareGuard";
+    const key = "__drydockGuard";
     const run = Math.random().toString(36).slice(2);
     const carry =
       window.history.state && typeof window.history.state === "object"
