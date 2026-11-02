@@ -10,7 +10,7 @@ import {
 } from "./domain/provider";
 import { VaultRegistry, type VaultRef } from "./domain/vault";
 import { VaultService } from "./application/vault-service";
-import { setMainWindowSize } from "./backend/window-size";
+import { setMainWindowSize, trackMainWindowSize } from "./backend/window-size";
 import type { LayoutNode } from "./domain/workspace";
 import { topRightPaneId } from "./domain/workspace";
 import Sidebar, { FOCUS_SEARCH_EVENT } from "./components/Sidebar";
@@ -20,7 +20,7 @@ import SettingsModal from "./components/SettingsModal";
 import VaultSwitcher from "./components/VaultSwitcher";
 import { OPEN_NOTE_EVENT } from "./components/WikiLink";
 import { EDIT_SCENE_EVENT, emitEditScene } from "./components/ExcalidrawBlock";
-import { PikachuLogo, I } from "./components/icons";
+import { DrydockMark, I } from "./components/icons";
 import { HOME_PATH } from "./outline/store";
 import { OPEN_HOME_EVENT, NAV_BACK_EVENT, NAV_FORWARD_EVENT } from "./outline/home-bus";
 
@@ -47,6 +47,9 @@ export default function App() {
   const [booted, setBooted] = useState(false);
   const sessionRef = useRef<VaultSession | null>(null);
 
+  // 工作区窗口尺寸记忆：拖拽 resize 防抖落盘，下次进工作区按记忆恢复
+  useEffect(() => trackMainWindowSize(), []);
+
   // 启动：拉注册表，有"上次打开且目录仍在"的仓库直接进，否则落启动页
   useEffect(() => {
     let alive = true;
@@ -60,6 +63,7 @@ export default function App() {
           const next = { domain: createDomain(), vault: ref };
           sessionRef.current = next;
           setSession(next);
+          void setMainWindowSize(); // 冷启动直接进工作区：也要按记忆尺寸恢复
         }
       } catch {
         /* 拉取/打开失败也进启动页，在那里能重试 */
@@ -90,7 +94,7 @@ export default function App() {
   if (!booted) {
     return (
       <div className="vault-boot">
-        <PikachuLogo size={72} className="text-ink" />
+        <DrydockMark size={72} className="text-ink" />
       </div>
     );
   }

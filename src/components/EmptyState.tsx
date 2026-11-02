@@ -1,8 +1,8 @@
-// 默认界面（空栏时）：个人 logo（线条皮卡丘）+ 新建入口。
+// 默认界面（空栏时）：品牌标志（干船坞里的船）+ 新建入口。
 // 新建笔记 / 新建白板（行内命名） / 新建手绘；标签条的 ＋ 已移除，这里是主入口。
 import { useEffect, useRef, useState } from "react";
 import { useSettings } from "../i18n";
-import { PikachuLogo, I } from "./icons";
+import { DrydockMark, I } from "./icons";
 
 interface Props {
   vaultName: string;
@@ -34,7 +34,7 @@ export default function EmptyState({ vaultName, onNewNote, onOpenHome, onNewCanv
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-6">
-      <PikachuLogo size={104} className="text-ink" />
+      <DrydockMark size={104} className="text-ink" />
       <div className="serif text-xl text-soft">{vaultName}</div>
 
       {/* 四个入口等宽（Ctrl+N 角标只占右端，不撑宽差异） */}

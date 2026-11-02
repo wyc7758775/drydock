@@ -14,21 +14,22 @@
 
 ## Tasks
 
-- [x] R1 前端源码内部标识全量改名：localStorage key / 事件名 / MIME / 卡片链接协议 / excalidraw source · evidence: sed 全量替换 38 个文件（NoteShare/noteShare/NOTESHARE/noteshare/note-share 五种写法）；grep -rn -i -E "noteshare|note-share" src src-tauri/src ... → 0 行；npm run typecheck -> exit 0
-- [x] R2 Tauri 配置改名：productName / window title / identifier / updater endpoints · evidence: tauri.conf.json：productName=Drydock、identifier=com.yoran.drydock、window title=Drydock、updater endpoints → github.com/wyc7758775/drydock；实机已生成 %APPDATA%\com.yoran.drydock
-- [x] R3 磁盘清单目录 .noteshare → .drydock（Rust + dev-server 同步） · evidence: lib.rs vault.join(".drydock")；dev-server.mjs path.join(abs, ".drydock", "vault.json")；cargo check exit=0；实机 D:/ProgramData/NoteShare/.drydock/vault.json 已生成
-- [x] R4 包名改名：npm / Cargo / [lib] name / main.rs，产物 drydock.exe · evidence: package.json name=drydock；Cargo.toml name=drydock + [lib] name=drydock_lib；main.rs；tauri build 产物 = target/release/drydock.exe（13.7MB）
-- [x] R5 可见文案改名：index.html / VaultSwitcher / README / AGENTS.md · evidence: index.html <title>Drydock；VaultSwitcher wordmark=Drydock；README 标题与两个 badge；AGENTS.md # Drydock 架构纪律
-- [x] R6 发布与脚本链路改名：release.yml / 启动.bat / start-*.cmd / server · evidence: release.yml releaseName 与 web.zip url；启动.bat 3 处；start-dev.cmd + start-vite.cmd；server/publish-server.mjs 头注释；docker-compose 容器名 drydock-publish
-- [x] R7 残留扫描门禁：代码与配置里搜不到 noteshare / note_share / note-share · evidence: grep -rn -i -E "noteshare|note_share|note-share" 11 个代码/配置路径 + assets -> 0 行（wc -l = 0），exit 0
-- [x] R8 改名后回归：lint / typecheck / check:i18n / check:theme / build / cargo 全绿 · evidence: check:i18n ✓ 392 key；check:theme ✓ 36/35/2 套；typecheck exit 0；lint ✖ 79 problems (0 errors，与基线同数)；vite build ✓ 17.60s；cargo check exit 0；tauri build --no-bundle ✓ release 1m28s
-- [ ] R9 手动两步（我做不了，需你操作）：GitHub repo 改名 + 本地目录重命名 · evidence: 未执行（需用户操作）：GitHub 仓库改名、重命名本地目录 D:\programer\note-share（pi 正跑在这个目录里，不能自己重命名）。代码侧 URL 已全部指向新仓
-- [x] K1 品牌母本 SVG（干船坞方案）与 16px 简化版 · evidence: assets/brand/drydock-icon.svg（1024 画板）；assets/brand/drydock-mark-16.svg（16 网格填充剪影）
-- [x] K2 图标生成改走 tauri icon（npm run icons），移除旧的 make-icons.mjs · evidence: package.json "icons": "tauri icon assets/brand/drydock-icon.svg"；rm scripts/make-icons.mjs；tauri icon 输出 icns/ico/32/128/128@2x/Square*/android/ios 全套
-- [x] K3 多尺寸目检与修形（16/32/128/512） · evidence: 对 render 迭代 12 轮，每轮读 icon.png / 32x32.png 目检：依次修掉“碗”、“相框”、“礼帽”、“拖鞋”、“长腿托盘”，最终 32/512 两档可读为“船架在三块墩上”；水位线从背景入船体（Plimsoll 记号），墩子改等高
-- [x] K4 应用内 logo：icons.tsx 新增 DrydockMark，VaultSwitcher wordmark 换用它 · evidence: icons.tsx 新增 DrydockMark（两个填充路径，currentColor）；VaultSwitcher 改用 <DrydockMark size={26}/> + Drydock 文字；PikachuLogo 保留在 EmptyState/App.tsx；typecheck exit 0，lint 79 warnings 0 errors
-- [x] K5 品牌文档 docs/branding.md · evidence: docs/branding.md：名字由来、图标元素几何/色值表、三条比例规则、色值归属、16px 简化规则（含为何去掉墩子）、生成与目检清单、改名范围与回滚
-- [x] K6 实机目检：exe 内嵌图标与 16px wordmark 渲染 · evidence: npm run tauri build -- --no-bundle -> 产出 src-tauri/target/release/drydock.exe；PowerShell [Icon]::ExtractAssociatedIcon 抽取 exe 内嵌图标 → 32x32 PNG 已目检为新船坞标志（即任务栏/开始菜单/安装包所用图标）；16px wordmark 另以 g=currentColor 预览图目检
+- [x] R1 前端源码内部标识全量改名 · evidence: sed 全量替换 38 个文件；grep -rn -i -E "noteshare|note-share" src src-tauri/src ... → 0 行；typecheck exit 0
+- [x] R2 Tauri 配置改名 · evidence: productName=Drydock、identifier=com.yoran.drydock、window title、updater endpoints → github.com/wyc7758775/drydock
+- [x] R3 磁盘清单目录 .noteshare → .drydock · evidence: lib.rs vault.join(".drydock")；dev-server.mjs 同步；cargo check exit=0
+- [x] R4 包名改名 · evidence: package.json/Cargo.toml name=drydock + [lib] drydock_lib；产物 drydock.exe
+- [x] R5 可见文案改名 · evidence: index.html / VaultSwitcher / README / AGENTS.md 均已是 Drydock
+- [x] R6 发布与脚本链路改名 · evidence: release.yml / 启动.bat / start-*.cmd / server / docker-compose
+- [x] R7 残留扫描门禁 · evidence: grep -rn -i -E "noteshare|note_share|note-share" → wc -l = 0
+- [x] R8 改名后回归全绿 · evidence: check:i18n ✓392；check:theme ✓；typecheck 0；lint 79 warnings 0 errors；vite build ✓；cargo check 0；tauri build ✓
+- [x] R9 GitHub 仓库改名 note-share → drydock + remote 改写 · evidence: curl PATCH API → HTTP 200 full_name=wyc7758775/drydock；remote 已改写；旧 URL 301 → 新 URL 200
+- [~] R10 本地目录重命名（守护进程等待 pi 退出） · evidence: 已杀 tauri dev/vite/esbuild/drydock.exe；pi 自身 cwd 占用无法重命名；后台守护进程跑着（本轮复查：仍存活），每 3s 重试、上限 30 分钟，pi 退出即改名并写 %TEMP%\drydock-rename.log
+- [x] K1 应用图标：直接使用提供的 船舶.svg · evidence: assets/brand/drydock-icon.svg = 用户提供的 船舶.svg（原封不动）；public/favicon.svg 同步
+- [x] K2 图标生成走 tauri icon，删除 make-icons.mjs · evidence: package.json "icons": "tauri icon assets/brand/drydock-icon.svg"；rm scripts/make-icons.mjs；icns/ico/Square*/android/ios 全套重生
+- [x] K3 图标多尺寸目检 + exe 内嵌图标验证 · evidence: tauri build --no-bundle → drydock.exe；PowerShell ExtractAssociatedIcon 抽 exe 内嵌图标 → 已目检为船图标；16/32/512 逐档看过
+- [x] K4 品牌文档 docs/branding.md · evidence: docs/branding.md：名字由来、图标来源与授权风险提示、三色表、小尺寸说明、生成与目检清单、改名范围与回滚
+- [x] W1 皮卡丘图标全局替换为 DrydockMark（含删除 PikachuLogo 组件） · evidence: grep -rn "Pikachu|皮卡丘" src/ index.html README.md AGENTS.md docs/ → 0 行；icons.tsx 删除 PikachuLogo 组件；App.tsx 启动屏 72px、EmptyState 104px 改用 DrydockMark；typecheck exit 0；lint 79 warnings 0 errors
+- [x] W2 窗口尺寸记忆：拖拽后落盘，下次打开恢复 · evidence: backend/window-size.ts：readSaved/writeSaved/trackMainWindowSize（400ms 防抖、最大化不覆盖、clamp 到屏幕与最小尺寸、picker 形态不记录）；App.tsx 挂 trackMainWindowSize，冷启动直接进工作区也调 setMainWindowSize。CDP 实测：原生窗口改 1000x700 → localStorage saved={w:986,h:692}；最大化 → saved 不变；杀进程冷启动 → 窗口恢复为 1001x701（inner 986x692，居中）
 
 ## 验收
 
