@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { TreeNode } from "../backend";
 import { backend } from "../backend";
-import { showContextMenu } from "./ContextMenu";
+import { showContextMenu, type CtxMenuItem } from "./ContextMenu";
 import { useSettings } from "../i18n";
 import { useDomain } from "../domain/provider";
 import { emitEditScene } from "./ExcalidrawBlock";
 import { importDroppedFiles } from "../lib/dropImport";
 import { IS_MAC } from "../lib/platform";
+import { joinVaultPath } from "../lib/files";
 import { I } from "./icons";
 
 // ---------- 行内输入行（重命名 / 新建文件夹共用） ----------
@@ -64,6 +65,21 @@ export interface TreeHandlers {
 
 const IMG_RE = /\.(png|jpe?g|gif|webp|svg)$/i;
 
+/** 目录树行的路径复制项：相对路径（vault 内）与绝对路径（vault 根 + 相对路径） */
+function pathMenuItems(
+  t: (key: string) => string,
+  vaultRoot: string,
+  relPath: string
+): CtxMenuItem[] {
+  const copy = (text: string) => {
+    void navigator.clipboard.writeText(text).catch((err) => console.error("复制路径失败", err));
+  };
+  return [
+    { label: t("copyRelativePath"), onClick: () => copy(relPath) },
+    { label: t("copyAbsolutePath"), onClick: () => copy(joinVaultPath(vaultRoot, relPath)) },
+  ];
+}
+
 /** 文件名：主名靠左、后缀靠右的两端对齐（Obsidian 式，后缀极淡对齐成一列）；
  *  .md 笔记不显示后缀（笔记类型由语义表达），附件仍显示后缀 */
 function TreeName({ name }: { name: string }) {
@@ -81,6 +97,8 @@ function TreeName({ name }: { name: string }) {
 
 interface Props extends TreeHandlers {
   items: TreeNode[];
+  /** 当前 vault 绝对根，用于拼复制用的绝对路径 */
+  vaultRoot: string;
   depth: number;
   currentPath: string | null;
   renamingPath: string | null;
@@ -98,6 +116,7 @@ export default function FileTree(props: Props) {
 
 function TreeRow({
   item,
+  vaultRoot,
   depth,
   currentPath,
   renamingPath,
@@ -205,6 +224,8 @@ function TreeRow({
                 h.onNewCanvasIn(item.path);
               } },
               { separator: true },
+              ...pathMenuItems(t, vaultRoot, item.path),
+              { separator: true },
               { label: t("rename"), onClick: () => h.onRequestRename(item) },
               { label: t("trashLabel"), danger: true, onClick: animatedDelete },
             ]);
@@ -242,6 +263,7 @@ function TreeRow({
               <div>
                 <FileTree
                   items={item.children}
+                  vaultRoot={vaultRoot}
                   depth={depth + 1}
                   currentPath={currentPath}
                   renamingPath={renamingPath}
@@ -291,6 +313,8 @@ function TreeRow({
                   .revealPath(item.path)
                   .catch((err) => console.error("在文件管理器中显示失败", err)),
             },
+            { separator: true },
+            ...pathMenuItems(t, vaultRoot, item.path),
             { separator: true },
             { label: t("newCanvas"), onClick: () => h.onNewCanvasIn(parentFolder) }, // 同级目录新建白板（行内命名）
             { separator: true },
@@ -350,6 +374,8 @@ function TreeRow({
             { separator: true },
             { label: t("viewAsset"), onClick: () => h.onViewAsset(item) },
             { label: t("downloadImage"), onClick: () => h.onDownloadAsset(item) },
+            { separator: true },
+            ...pathMenuItems(t, vaultRoot, item.path),
           ]);
           return;
         }
@@ -357,6 +383,8 @@ function TreeRow({
           showContextMenu(e.clientX, e.clientY, [
             { label: t("openInNewTab"), onClick: () => h.onOpenNote(item.path, { newTab: true }) },
             { label: t("openInNewPane"), onClick: () => h.onOpenNote(item.path, { newPane: true }) },
+            { separator: true },
+            ...pathMenuItems(t, vaultRoot, item.path),
             { separator: true },
             {
               label: t("pdfConvert"),
@@ -379,6 +407,8 @@ function TreeRow({
             { label: t("openInNewTab"), onClick: () => emitEditScene(item.path, true) },
             { label: t("openInNewPane"), onClick: () => h.onOpenNote(item.path, { newPane: true }) },
             { separator: true },
+            ...pathMenuItems(t, vaultRoot, item.path),
+            { separator: true },
             { label: t("rename"), onClick: () => h.onRequestRename(item) },
             { label: t("trashLabel"), danger: true, onClick: animatedDelete },
           ]);
@@ -389,10 +419,15 @@ function TreeRow({
             { label: t("openInNewTab"), onClick: () => h.onOpenNote(item.path, { newTab: true }) },
             { label: t("openInNewPane"), onClick: () => h.onOpenNote(item.path, { newPane: true }) },
             { separator: true },
+            ...pathMenuItems(t, vaultRoot, item.path),
+            { separator: true },
             { label: t("rename"), onClick: () => h.onRequestRename(item) },
             { label: t("trashLabel"), danger: true, onClick: animatedDelete },
           ]);
+          return;
         }
+        // 其他附件（无专用菜单的类型）也提供路径复制，避免右键完全无响应
+        showContextMenu(e.clientX, e.clientY, pathMenuItems(t, vaultRoot, item.path));
       }}
     >
         <span className="flex h-full min-w-0 flex-1 items-center gap-1.5 pl-1">

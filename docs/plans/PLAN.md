@@ -30,6 +30,9 @@
 - [x] K4 品牌文档 docs/branding.md · evidence: docs/branding.md：名字由来、图标来源与授权风险提示、三色表、小尺寸说明、生成与目检清单、改名范围与回滚
 - [x] W1 皮卡丘图标全局替换为 DrydockMark（含删除 PikachuLogo 组件） · evidence: grep -rn "Pikachu|皮卡丘" src/ index.html README.md AGENTS.md docs/ → 0 行；icons.tsx 删除 PikachuLogo 组件；App.tsx 启动屏 72px、EmptyState 104px 改用 DrydockMark；typecheck exit 0；lint 79 warnings 0 errors
 - [x] W2 窗口尺寸记忆：拖拽后落盘，下次打开恢复 · evidence: backend/window-size.ts：readSaved/writeSaved/trackMainWindowSize（400ms 防抖、最大化不覆盖、clamp 到屏幕与最小尺寸、picker 形态不记录）；App.tsx 挂 trackMainWindowSize，冷启动直接进工作区也调 setMainWindowSize。CDP 实测：原生窗口改 1000x700 → localStorage saved={w:986,h:692}；最大化 → saved 不变；杀进程冷启动 → 窗口恢复为 1001x701（inner 986x692，居中）
+- [x] C1 新增 vault 绝对路径拼接 helper（Windows/Unix 分隔符）+ 中英词条 copyRelativePath/copyAbsolutePath · evidence: src/lib/files.ts 新增 joinVaultPath（去根尾分隔符、rel 统一正斜杠、分隔符跟随根）；node 实测：D:\notes + a/b.md → D:\notes\a\b.md，/Users/me/notes + a/b.md → /Users/me/notes/a/b.md，空 rel → 根；check:i18n ✓394
+- [x] C2 目录树全部行类型（文件夹/笔记/图片/PDF/手绘/白板）右键菜单接入复制相对/绝对路径，vaultRoot 从 Sidebar 贯穿递归树 · evidence: FileTree 7 处菜单全部接 pathMenuItems（文件夹/笔记/图片/PDF/手绘/白板/其他附件兜底），grep 计数 7；vaultRoot 由 Sidebar.currentVault.path 贯穿递归 FileTree；typecheck exit 0
+- [x] C3 回归验证：i18n/typecheck/lint/build + helper 实测 + 浏览器右键菜单烟测 · evidence: check:i18n ✓394；typecheck exit 0；lint 0 errors/79 warnings（均为既有警告）；vite build ✓；CDP 烟测 note AI-Agent-Book/00-引言.md rel=AI-Agent-Book/00-引言.md abs=D:/ProgramData/NoteShare/AI-Agent-Book/00-引言.md，folder AI-Agent-Book 同样正确，输出 UI_SMOKE_OK
 
 ## 验收
 

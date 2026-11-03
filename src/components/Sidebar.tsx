@@ -435,6 +435,7 @@ export default function Sidebar(props: Props) {
             )}
             <FileTree
               items={tree.filter((t) => !HIDDEN.has(t.name))}
+              vaultRoot={props.currentVault.path}
               depth={0}
               currentPath={currentPath}
               renamingPath={renaming?.path ?? null}
